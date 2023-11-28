@@ -1,7 +1,7 @@
 <div align="center">
   <h1>GM Sysinfo</h1>
   <p>
-    Profile your game, and get it's (and the systems) resource usage!
+    Get system information and resource usage for both your game and the system it's running on!
   </p>
 </div>
 
@@ -11,6 +11,9 @@ Below are some basic examples of the functionality in this extension
 
 ## Display memory usage
 ```gml
+// Init
+sysinfo_init();
+
 // Get max memory of the system
 var max_mem = sysinfo_sys_mem_max();
 
@@ -26,6 +29,9 @@ draw_text(0, 0, string(mem_mb) + " / " + string(max_mb) + " (" + string(mem / ma
 
 ## Display CPU usage
 ```gml
+// Init
+sysinfo_init();
+
 // Get the CPU and memory usage of the game
 var cpu_name = sysinfo_cpu_name();
 var cpu = sysinfo_cpu_usage();

@@ -50,7 +50,7 @@ jobs:
 
       # Build test/test.c
       - name: Build test
-        run: gcc -o test/testlib test/test.c -L target/release -lfile_metadata
+        run: gcc -o test/testlib test/test.c -L target/release -lgm_sysinfo
 
       # Run test/test.c
       - name: Run
@@ -63,4 +63,4 @@ jobs:
 
       - name: Run
         if: matrix.platform == 'windows-latest'
-        run: move target\release\file_metadata.dll file_metadata.dll && test\testlib.exe
+        run: move target\release\gm_sysinfo.dll gm_sysinfo.dll && test\testlib.exe
