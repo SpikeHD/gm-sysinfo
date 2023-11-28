@@ -1,0 +1,72 @@
+name: Build
+
+on:
+  push:
+    paths:
+      - '.github/workflows/build.yml'
+      - 'src/**/*'
+      - 'Cargo.toml'
+      - 'package.sh'
+      - 'package.ps1'
+  pull_request:
+    paths:
+      - '.github/workflows/build.yml'
+      - 'src/**/*'
+      - 'Cargo.toml'
+      - 'package.sh'
+      - 'package.ps1'
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ${{ matrix.platform }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [windows-latest, ubuntu-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            ./target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Build
+        run: cargo build --release
+
+      # - name: Package
+      #   if: matrix.platform != 'windows-latest'
+      #   run: chmod +x ./package.sh && ./package.sh
+      #   env:
+      #     LIB_FILE: ${{ matrix.platform != 'windows-latest' && 'lib' || '' }}file_metadata${{ matrix.platform == 'windows-latest' && '.dll' || matrix.platform == 'macos-latest' && '.dylib' || '.so' }}
+
+      # - name: Package
+      #   if: matrix.platform == 'windows-latest'
+      #   run: ./package.ps1
+      #   env:
+      #     LIB_FILE: ${{ matrix.platform != 'windows-latest' && 'lib' || '' }}file_metadata${{ matrix.platform == 'windows-latest' && '.dll' || matrix.platform == 'macos-latest' && '.dylib' || '.so' }}
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: lib-${{ matrix.platform }}
+          # Find exec based on platform
+          path: target/release/${{ matrix.platform != 'windows-latest' && 'lib' || '' }}file_metadata${{ matrix.platform == 'windows-latest' && '.dll' || matrix.platform == 'macos-latest' && '.dylib' || '.so' }}
+          
