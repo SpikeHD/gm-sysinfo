@@ -18,6 +18,16 @@ pub extern "C" fn init() {
   }
 }
 
+// Get username
+#[no_mangle]
+pub extern "C" fn get_username() -> *mut c_char {
+  let username = whoami::username();
+
+  CString::new(username)
+    .unwrap_or(CString::new("").unwrap())
+    .into_raw()
+}
+
 // Get the current exe, and get the PID from that exe
 fn get_pid_internal() -> Result<Pid, Box<dyn std::error::Error>> {
   if !is_initialized() {

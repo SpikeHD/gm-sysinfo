@@ -18,6 +18,8 @@
 extern bool is_initialized();
 extern void init();
 
+extern const char* get_username();
+
 extern float get_pid();
 extern float get_memory_max();
 

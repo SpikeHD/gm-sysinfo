@@ -8,3 +8,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 sysinfo = "0.29.11"
+whoami = "1.4.1"
