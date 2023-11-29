@@ -7,7 +7,6 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-async-std = { version = "1.12.0", default-features = false, features = ["default"] }
 sysinfo = { version = "0.29.11", default-features = false }
 whoami = { version = "1.4.1", default-features = false }
 
@@ -15,6 +14,4 @@ whoami = { version = "1.4.1", default-features = false }
 metal = "0.27.0"
 
 [target.'cfg(not(target_os = "macos"))'.dependencies]
-rust-gpu-tools = { version = "0.7.2", default-features = false, features = ["opencl"] }
-
-
+vulkano = { version = "0.34.1", default-features = false }

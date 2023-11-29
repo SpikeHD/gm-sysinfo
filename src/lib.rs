@@ -168,7 +168,7 @@ pub extern "C" fn get_cpu_vendor_id() -> *mut c_char {
 
 // Get GPU name
 #[no_mangle]
-pub extern "C" fn get_gpu_name() -> *mut c_char {
+pub unsafe extern "C" fn get_gpu_name() -> *mut c_char {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return CString::new("").unwrap().into_raw();
@@ -183,7 +183,7 @@ pub extern "C" fn get_gpu_name() -> *mut c_char {
 
 // Get GPU VRAM
 #[no_mangle]
-pub extern "C" fn get_gpu_vram() -> f64 {
+pub unsafe extern "C" fn get_gpu_vram() -> f64 {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return -1.0;
