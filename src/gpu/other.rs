@@ -10,7 +10,10 @@ static mut INSTANCE: Option<Arc<Instance>> = None;
 pub fn maybe_create_instance() {
   unsafe {
     if INSTANCE.is_none() {
-      let lib = VulkanLibrary::new().unwrap();
+      let lib = match VulkanLibrary::new() {
+        Ok(lib) => lib,
+        Err(_) => return,
+      };
       let instance = Instance::new(lib, InstanceCreateInfo::application_from_cargo_toml());
 
       INSTANCE = match instance {
