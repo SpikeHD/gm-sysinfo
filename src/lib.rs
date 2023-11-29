@@ -1,6 +1,6 @@
 use std::ffi::CString;
 use std::os::raw::c_char;
-use sysinfo::{CpuExt, Pid, PidExt, ProcessExt, System, SystemExt};
+use sysinfo::{CpuExt, Pid, PidExt, ProcessExt, System, SystemExt, CpuRefreshKind};
 
 static mut SYSTEM: Option<System> = None;
 
@@ -15,6 +15,13 @@ pub extern "C" fn is_initialized() -> bool {
 pub extern "C" fn init() {
   unsafe {
     SYSTEM = Some(System::new());
+    
+    // trigger a refresh
+    SYSTEM.as_mut().unwrap().refresh_all();
+
+    // After ~300ms, trigger a CPU refresh
+    std::thread::sleep(System::MINIMUM_CPU_UPDATE_INTERVAL * 2);
+    SYSTEM.as_mut().unwrap().refresh_cpu_specifics(CpuRefreshKind::everything());
   }
 }
 
@@ -58,6 +65,17 @@ pub extern "C" fn get_memory_max() -> f64 {
   unsafe { SYSTEM.as_mut().unwrap().total_memory() as f64 }
 }
 
+// Get core count
+#[no_mangle]
+pub extern "C" fn get_core_count() -> f64 {
+  if !is_initialized() {
+    eprintln!("System not initialized!");
+    return -1.0;
+  }
+
+  unsafe { SYSTEM.as_mut().unwrap().cpus().len() as f64 }
+}
+
 // Get CPU frequency
 #[no_mangle]
 pub extern "C" fn get_cpu_frequency() -> f64 {
@@ -67,6 +85,9 @@ pub extern "C" fn get_cpu_frequency() -> f64 {
   }
 
   unsafe {
+    // CPU data should always have a refresh_cpu() call before it
+    SYSTEM.as_mut().unwrap().refresh_cpu_specifics(CpuRefreshKind::everything());
+
     let cpus = SYSTEM.as_mut().unwrap().cpus();
 
     cpus[0].frequency() as f64
@@ -188,6 +209,9 @@ pub extern "C" fn proc_cpu_usage() -> f64 {
   }
 
   unsafe {
+    // CPU data should always have a refresh_cpu() call before it
+    SYSTEM.as_mut().unwrap().refresh_cpu_specifics(CpuRefreshKind::everything());
+
     // Refresh and get the process
     SYSTEM.as_mut().unwrap().refresh_processes();
 

@@ -22,6 +22,7 @@ extern const char* get_username();
 
 extern double get_pid();
 extern double get_memory_max();
+extern double get_core_count();
 
 extern double get_cpu_frequency();
 extern const char* get_cpu_name();
@@ -46,6 +47,10 @@ int main() {
   // Test get_pid
   printf("PID: %f\n", get_pid());
   assert(get_pid() > 0);
+
+  // Test get_core_count
+  printf("Core count: %f\n", get_core_count());
+  assert(get_core_count() > 0);
 
   // Test get_memory_max
   printf("Memory max: %f\n", get_memory_max());
