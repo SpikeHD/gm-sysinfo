@@ -1,16 +1,25 @@
 <div align="center">
   <h1>GM Sysinfo</h1>
   <p>
-    Get system information and resource usage for both your game and the system it's running on!
+    Cross-platform GameMaker extension for getting system information and resource usage 
   </p>
 </div>
+
+# Table of Contents
+* [Table of Contents](#table-of-contents)
+* [Examples](#examples)
+  * [Display memory usage](#display-memory-usage)
+  * [Display CPU usage](#display-cpu-usage)
+  * [Get the host/username](#get-the-hostusername)
+* [TODO](#todo)
+* [Documentation](#documentation)
 
 # Examples
 
 Below are some basic examples of the functionality in this extension
 
 ## Display memory usage
-```gml
+```javascript
 // Init
 sysinfo_init();
 
@@ -28,7 +37,7 @@ draw_text(0, 0, string(mem_mb) + " / " + string(max_mb) + " (" + string(mem / ma
 ```
 
 ## Display CPU usage
-```gml
+```javascript
 // Init
 sysinfo_init();
 
@@ -41,7 +50,7 @@ draw_text(0, 0, cpu_name + ": " + string(cpu) + "%");
 ```
 
 ## Get the host/username
-```gml
+```javascript
 // Init
 sysinfo_init();
 
