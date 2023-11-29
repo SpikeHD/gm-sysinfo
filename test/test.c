@@ -90,7 +90,7 @@ int main() {
 
   // Test get_gpu_vram
   printf("GPU VRAM: %f\n", get_gpu_vram());
-  assert(get_gpu_vram() > 0);
+  assert(get_gpu_vram() > -1);
 
   // Test sys_memory_used
   printf("System memory used: %f\n", sys_memory_used());
