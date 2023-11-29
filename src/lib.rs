@@ -2,8 +2,9 @@ use std::ffi::CString;
 use std::os::raw::c_char;
 use sysinfo::{CpuExt, CpuRefreshKind, Pid, PidExt, ProcessExt, System, SystemExt};
 
+mod gpu;
+
 static mut SYSTEM: Option<System> = None;
-static mut GPU_ADAPTER: Option<wgpu::AdapterInfo> = None;
 
 // Check if initialized
 #[no_mangle]
@@ -11,34 +12,11 @@ pub extern "C" fn is_initialized() -> bool {
   unsafe { SYSTEM.is_some() }
 }
 
-// Check if GPU is initialized
-#[no_mangle]
-pub extern "C" fn is_gpu_initialized() -> bool {
-  unsafe { GPU_ADAPTER.is_some() }
-}
-
 // Initializes the System object
 #[no_mangle]
 pub extern "C" fn init() {
   unsafe {
     SYSTEM = Some(System::new());
-    let gpu_instance = wgpu::Instance::new(wgpu::InstanceDescriptor::default());
-
-    // log the name of the GPU
-    let adapter = async_std::task::block_on(gpu_instance.request_adapter(
-      &wgpu::RequestAdapterOptions {
-        power_preference: wgpu::PowerPreference::HighPerformance,
-        compatible_surface: None,
-        force_fallback_adapter: false,
-      },
-    ));
-
-    if adapter.is_some() {
-      let adapter = adapter.unwrap();
-      let info = adapter.get_info();
-
-      GPU_ADAPTER = Some(info);
-    }
 
     // trigger a refresh
     SYSTEM.as_mut().unwrap().refresh_all();
@@ -191,35 +169,29 @@ pub extern "C" fn get_cpu_vendor_id() -> *mut c_char {
 // Get GPU name
 #[no_mangle]
 pub extern "C" fn get_gpu_name() -> *mut c_char {
-  if !is_gpu_initialized() {
-    eprintln!("GPU not initialized!");
+  if !is_initialized() {
+    eprintln!("System not initialized!");
     return CString::new("").unwrap().into_raw();
   }
 
-  unsafe {
-    let gpu_name = GPU_ADAPTER.as_mut().unwrap().name.clone();
+  let gpu_name = gpu::info::get_gpu_name();
 
-    CString::new(gpu_name)
-      .unwrap_or(CString::new("").unwrap())
-      .into_raw()
-  }
+  CString::new(gpu_name)
+    .unwrap_or(CString::new("").unwrap())
+    .into_raw()
 }
 
-// Get GPU driver name
+// Get GPU VRAM
 #[no_mangle]
-pub extern "C" fn get_gpu_driver_name() -> *mut c_char {
-  if !is_gpu_initialized() {
-    eprintln!("GPU not initialized!");
-    return CString::new("").unwrap().into_raw();
+pub extern "C" fn get_gpu_vram() -> f64 {
+  if !is_initialized() {
+    eprintln!("System not initialized!");
+    return -1.0;
   }
 
-  unsafe {
-    let gpu_driver_name = GPU_ADAPTER.as_mut().unwrap().driver.clone();
+  let gpu_vram = gpu::info::get_gpu_vram();
 
-    CString::new(gpu_driver_name)
-      .unwrap_or(CString::new("").unwrap())
-      .into_raw()
-  }
+  gpu_vram as f64
 }
 
 // Get memory used for the system
