@@ -91,7 +91,8 @@ draw_text(0, 0, user + "@" + host);
   - [ ] Get usage for a specific core
 - [x] Memory usage
 - [x] System name/hostname
-- [ ] GPU usage(?)
+- [x] GPU info
+  - [ ]  GPU usage
 
 # Documentation
 
