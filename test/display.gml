@@ -32,3 +32,5 @@ print("sysinfo_sys_memory_used: " + byte_to_readable(sysinfo_sys_memory_used()))
 print("sysinfo_proc_memory_used: " + byte_to_readable(sysinfo_proc_memory_used()));
 print("sysinfo_sys_cpu_usage: " + string(sysinfo_sys_cpu_usage()));
 print("sysinfo_proc_cpu_usage: " + string(sysinfo_proc_cpu_usage()));
+print("sysinfo_proc_gpu_name: " + sysinfo_get_gpu_name());
+print("sysinfo_proc_gpu_vram: " + byte_to_readable(sysinfo_get_gpu_vram()));
