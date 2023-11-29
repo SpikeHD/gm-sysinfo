@@ -48,7 +48,7 @@ Below are some basic examples of the functionality in this extension
 sysinfo_init();
 
 // Get max memory of the system
-var max_mem = sysinfo_sys_mem_max();
+var max_mem = sysinfo_get_memory_max();
 
 // Get the memory usage of the game
 var mem = sysinfo_proc_mem_usage();
