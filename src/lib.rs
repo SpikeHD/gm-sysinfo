@@ -172,6 +172,11 @@ pub extern "C" fn sys_memory_used() -> f64 {
     return -1.0;
   }
 
+  // refresh
+  unsafe {
+    SYSTEM.as_mut().unwrap().refresh_memory();
+  }
+
   unsafe { SYSTEM.as_mut().unwrap().used_memory() as f64 }
 }
 
@@ -201,6 +206,11 @@ pub extern "C" fn sys_cpu_usage() -> f64 {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return -1.0;
+  }
+
+  // Refresh
+  unsafe {
+    SYSTEM.as_mut().unwrap().refresh_cpu();
   }
 
   unsafe {
