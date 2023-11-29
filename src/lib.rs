@@ -168,28 +168,27 @@ pub extern "C" fn get_cpu_vendor_id() -> *mut c_char {
 
 // Get GPU name
 #[no_mangle]
-pub unsafe extern "C" fn get_gpu_name() -> *mut c_char {
+pub extern "C" fn get_gpu_name() -> *mut c_char {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return CString::new("").unwrap().into_raw();
   }
 
-  let gpu_name = gpu::get_gpu_name();
-
-  CString::new(gpu_name)
-    .unwrap_or(CString::new("").unwrap())
-    .into_raw()
+  unsafe {
+    CString::new(gpu::get_gpu_name())
+      .unwrap_or(CString::new("").unwrap())
+      .into_raw()
+  }
 }
 
-// Get GPU VRAM
 #[no_mangle]
-pub unsafe extern "C" fn get_gpu_vram() -> f64 {
+pub extern "C" fn get_gpu_vram() -> f64 {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return -1.0;
   }
 
-  gpu::get_gpu_vram() as f64
+  unsafe { gpu::get_gpu_vram() as f64 }
 }
 
 // Get memory used for the system
