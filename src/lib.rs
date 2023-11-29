@@ -19,7 +19,7 @@ pub extern "C" fn init() {
     // trigger a refresh
     SYSTEM.as_mut().unwrap().refresh_all();
 
-    // After ~300ms, trigger a CPU refresh
+    // After a short amount of time, trigger a CPU refresh
     std::thread::sleep(System::MINIMUM_CPU_UPDATE_INTERVAL * 2);
     SYSTEM.as_mut().unwrap().refresh_cpu_specifics(CpuRefreshKind::everything());
   }
