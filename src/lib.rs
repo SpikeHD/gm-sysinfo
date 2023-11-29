@@ -1,6 +1,6 @@
 use std::ffi::CString;
 use std::os::raw::c_char;
-use sysinfo::{CpuExt, Pid, PidExt, Process, ProcessExt, System, SystemExt};
+use sysinfo::{CpuExt, Pid, PidExt, ProcessExt, System, SystemExt};
 
 static mut SYSTEM: Option<System> = None;
 
@@ -18,6 +18,19 @@ pub extern "C" fn init() {
   }
 }
 
+// Exe path to name
+#[no_mangle]
+fn exe_path_to_name(path: &str) -> String {
+  let path = path.replace("\\", "/");
+
+  let path = path.split("/").collect::<Vec<&str>>();
+
+  // Get rid of extension if it exists
+  let path = path[path.len() - 1].split(".").collect::<Vec<&str>>();
+  
+  path[0].to_string()
+}
+
 // Get username
 #[no_mangle]
 pub extern "C" fn get_username() -> *mut c_char {
@@ -28,41 +41,17 @@ pub extern "C" fn get_username() -> *mut c_char {
     .into_raw()
 }
 
-// Get the current exe, and get the PID from that exe
-fn get_pid_internal() -> Result<Pid, Box<dyn std::error::Error>> {
-  if !is_initialized() {
-    // Error
-    return Err("System not initialized".into());
-  }
-
-  unsafe {
-    let exe = std::env::current_exe().unwrap();
-    let exe = exe.to_str().unwrap();
-
-    // Refresh the system processes
-    SYSTEM.as_mut().unwrap().refresh_processes();
-
-    let proc_with_name = SYSTEM.as_mut().unwrap().processes_by_name(exe);
-    let proc_with_name = proc_with_name.collect::<Vec<&Process>>();
-
-    // Get the first process with the name of the current exe
-    let proc_with_name = proc_with_name[0];
-
-    // Get the PID of the process
-    Ok(proc_with_name.pid())
-  }
-}
-
-// Get Pid as number
+// Get pid as float
 #[no_mangle]
 pub extern "C" fn get_pid() -> f64 {
-  get_pid_internal().unwrap_or(Pid::from(0)).as_u32() as f64
+  std::process::id() as f64
 }
 
 // Get memory maximum for the system
 #[no_mangle]
 pub extern "C" fn get_memory_max() -> f64 {
   if !is_initialized() {
+    eprintln!("System not initialized!");
     return -1.0;
   }
 
@@ -73,6 +62,7 @@ pub extern "C" fn get_memory_max() -> f64 {
 #[no_mangle]
 pub extern "C" fn get_cpu_frequency() -> f64 {
   if !is_initialized() {
+    eprintln!("System not initialized!");
     return -1.0;
   }
 
@@ -87,6 +77,7 @@ pub extern "C" fn get_cpu_frequency() -> f64 {
 #[no_mangle]
 pub extern "C" fn get_cpu_name() -> *mut c_char {
   if !is_initialized() {
+    eprintln!("System not initialized!");
     return CString::new("").unwrap().into_raw();
   }
 
@@ -104,6 +95,7 @@ pub extern "C" fn get_cpu_name() -> *mut c_char {
 #[no_mangle]
 pub extern "C" fn get_cpu_brand() -> *mut c_char {
   if !is_initialized() {
+    eprintln!("System not initialized!");
     return CString::new("").unwrap().into_raw();
   }
 
@@ -121,6 +113,7 @@ pub extern "C" fn get_cpu_brand() -> *mut c_char {
 #[no_mangle]
 pub extern "C" fn get_cpu_vendor_id() -> *mut c_char {
   if !is_initialized() {
+    eprintln!("System not initialized!");
     return CString::new("").unwrap().into_raw();
   }
 
@@ -138,6 +131,7 @@ pub extern "C" fn get_cpu_vendor_id() -> *mut c_char {
 #[no_mangle]
 pub extern "C" fn sys_memory_used() -> f64 {
   if !is_initialized() {
+    eprintln!("System not initialized!");
     return -1.0;
   }
 
@@ -148,6 +142,7 @@ pub extern "C" fn sys_memory_used() -> f64 {
 #[no_mangle]
 pub extern "C" fn proc_memory_used() -> f64 {
   if !is_initialized() {
+    eprintln!("System not initialized!");
     return -1.0;
   }
 
@@ -156,7 +151,7 @@ pub extern "C" fn proc_memory_used() -> f64 {
     SYSTEM.as_mut().unwrap().refresh_processes();
 
     // Safe to unwrap, we already check if the system is initialized (twice!)
-    let pid = get_pid_internal().unwrap();
+    let pid = Pid::from_u32(get_pid() as u32);
     let proc = SYSTEM.as_mut().unwrap().process(pid).unwrap();
 
     proc.memory() as f64
@@ -167,6 +162,7 @@ pub extern "C" fn proc_memory_used() -> f64 {
 #[no_mangle]
 pub extern "C" fn sys_cpu_usage() -> f64 {
   if !is_initialized() {
+    eprintln!("System not initialized!");
     return -1.0;
   }
 
@@ -187,6 +183,7 @@ pub extern "C" fn sys_cpu_usage() -> f64 {
 #[no_mangle]
 pub extern "C" fn proc_cpu_usage() -> f64 {
   if !is_initialized() {
+    eprintln!("System not initialized!");
     return -1.0;
   }
 
@@ -195,7 +192,7 @@ pub extern "C" fn proc_cpu_usage() -> f64 {
     SYSTEM.as_mut().unwrap().refresh_processes();
 
     // Safe to unwrap, we already check if the system is initialized (twice!)
-    let pid = get_pid_internal().unwrap();
+    let pid = Pid::from_u32(get_pid() as u32);
     let proc = SYSTEM.as_mut().unwrap().process(pid).unwrap();
 
     proc.cpu_usage() as f64
