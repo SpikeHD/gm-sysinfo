@@ -53,11 +53,6 @@ jobs:
         if: matrix.platform == 'ubuntu-latest'
         run: sudo apt-get install ocl-icd-opencl-dev
 
-      # Install opencl lib (windows) via intel drivers
-      - name: Install OpenCL
-        if: matrix.platform == 'windows-latest'
-        run: choco install opencl-intel-cpu-runtime
-
       - name: Build
         run: cargo build --release
 
