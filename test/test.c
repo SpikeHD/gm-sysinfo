@@ -16,6 +16,7 @@
 
 // Function externs for Rust functions
 extern bool is_initialized();
+extern bool is_gpu_initialized();
 extern void init();
 
 extern const char* get_username();
@@ -30,6 +31,9 @@ extern const char* get_cpu_name();
 extern const char* get_cpu_brand();
 extern const char* get_cpu_vendor_id();
 
+extern const char* get_gpu_name();
+extern const char* get_gpu_driver_name();
+
 extern double sys_memory_used();
 extern double proc_memory_used();
 extern double sys_cpu_usage();
@@ -40,10 +44,18 @@ int main() {
   printf("is_initialized: %d\n", is_initialized());
   assert(!is_initialized());
 
+  // Test is_gpu_initialized
+  printf("is_gpu_initialized: %d\n", is_gpu_initialized());
+  assert(!is_gpu_initialized());
+
   // Test init
   init();
   printf("is_initialized (after init): %d\n", is_initialized());
   assert(is_initialized());
+
+  // Test is_gpu_initialized
+  printf("is_gpu_initialized (after init): %d\n", is_gpu_initialized());
+  assert(is_gpu_initialized());
 
   // Test username
   printf("Username: %s\n", get_username());
@@ -80,6 +92,14 @@ int main() {
   // Test get_cpu_vendor_id
   printf("CPU vendor ID: %s\n", get_cpu_vendor_id());
   assert(strlen(get_cpu_vendor_id()) > 0);
+
+  // Test get_gpu_name
+  printf("GPU name: %s\n", get_gpu_name());
+  assert(strlen(get_gpu_name()) > 0);
+
+  // Test get_gpu_driver_name
+  printf("GPU driver name: %s\n", get_gpu_driver_name());
+  assert(strlen(get_gpu_driver_name()) > 0);
 
   // Test sys_memory_used
   printf("System memory used: %f\n", sys_memory_used());

@@ -3,6 +3,7 @@ use std::os::raw::c_char;
 use sysinfo::{CpuExt, CpuRefreshKind, Pid, PidExt, ProcessExt, System, SystemExt};
 
 static mut SYSTEM: Option<System> = None;
+static mut GPU_ADAPTER: Option<wgpu::AdapterInfo> = None;
 
 // Check if initialized
 #[no_mangle]
@@ -10,11 +11,34 @@ pub extern "C" fn is_initialized() -> bool {
   unsafe { SYSTEM.is_some() }
 }
 
+// Check if GPU is initialized
+#[no_mangle]
+pub extern "C" fn is_gpu_initialized() -> bool {
+  unsafe { GPU_ADAPTER.is_some() }
+}
+
 // Initializes the System object
 #[no_mangle]
 pub extern "C" fn init() {
   unsafe {
     SYSTEM = Some(System::new());
+    let gpu_instance = wgpu::Instance::new(wgpu::InstanceDescriptor::default());
+
+    // log the name of the GPU
+    let adapter = async_std::task::block_on(gpu_instance.request_adapter(
+      &wgpu::RequestAdapterOptions {
+        power_preference: wgpu::PowerPreference::HighPerformance,
+        compatible_surface: None,
+        force_fallback_adapter: false,
+      },
+    ));
+
+    if adapter.is_some() {
+      let adapter = adapter.unwrap();
+      let info = adapter.get_info();
+
+      GPU_ADAPTER = Some(info);
+    }
 
     // trigger a refresh
     SYSTEM.as_mut().unwrap().refresh_all();
@@ -159,6 +183,40 @@ pub extern "C" fn get_cpu_vendor_id() -> *mut c_char {
     let cpu_vendor_id = cpu_info.vendor_id();
 
     CString::new(cpu_vendor_id)
+      .unwrap_or(CString::new("").unwrap())
+      .into_raw()
+  }
+}
+
+// Get GPU name
+#[no_mangle]
+pub extern "C" fn get_gpu_name() -> *mut c_char {
+  if !is_gpu_initialized() {
+    eprintln!("GPU not initialized!");
+    return CString::new("").unwrap().into_raw();
+  }
+
+  unsafe {
+    let gpu_name = GPU_ADAPTER.as_mut().unwrap().name.clone();
+
+    CString::new(gpu_name)
+      .unwrap_or(CString::new("").unwrap())
+      .into_raw()
+  }
+}
+
+// Get GPU driver name
+#[no_mangle]
+pub extern "C" fn get_gpu_driver_name() -> *mut c_char {
+  if !is_gpu_initialized() {
+    eprintln!("GPU not initialized!");
+    return CString::new("").unwrap().into_raw();
+  }
+
+  unsafe {
+    let gpu_driver_name = GPU_ADAPTER.as_mut().unwrap().driver.clone();
+
+    CString::new(gpu_driver_name)
       .unwrap_or(CString::new("").unwrap())
       .into_raw()
   }
