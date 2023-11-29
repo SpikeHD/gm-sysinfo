@@ -188,7 +188,7 @@ pub extern "C" fn get_gpu_vram() -> f64 {
     eprintln!("System not initialized!");
     return -1.0;
   }
-  
+
   gpu::get_gpu_vram() as f64
 }
 

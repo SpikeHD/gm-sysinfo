@@ -27,18 +27,18 @@ pub fn get_gpu_vram() -> u64 {
 pub fn get_gpu_name() -> String {
   let gpus = Device::all();
 
-  if gpus.len() == 0 {
+  if gpus.is_empty() {
     return String::from("N/A");
   }
-  
+
   gpus[0].name().to_string()
 }
 
 #[cfg(target_os = "macos")]
 pub fn get_gpu_vram() -> u64 {
   let gpus = Device::all();
-  
-  if gpus.len() == 0 {
+
+  if gpus.is_empty() {
     return 0;
   }
 
