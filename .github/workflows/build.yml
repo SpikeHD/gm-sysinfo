@@ -48,6 +48,16 @@ jobs:
             ./target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
+      # Install opencl lib (linux)
+      - name: Install OpenCL
+        if: matrix.platform == 'ubuntu-latest'
+        run: sudo apt-get install ocl-icd-opencl-dev
+
+      # Install opencl lib (windows)
+      - name: Install OpenCL
+        if: matrix.platform == 'windows-latest'
+        run: choco install opencl
+
       - name: Build
         run: cargo build --release
 

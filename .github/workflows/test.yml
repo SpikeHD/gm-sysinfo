@@ -44,6 +44,16 @@ jobs:
           toolchain: stable
           override: true
 
+      # Install opencl lib (linux)
+      - name: Install OpenCL
+        if: matrix.platform == 'ubuntu-latest'
+        run: sudo apt-get install ocl-icd-opencl-dev
+
+      # Install opencl lib (windows)
+      - name: Install OpenCL
+        if: matrix.platform == 'windows-latest'
+        run: choco install opencl
+
       # Build the library
       - name: Build
         run: cargo build --release
