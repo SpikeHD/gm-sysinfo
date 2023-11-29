@@ -13,7 +13,10 @@ pub fn maybe_create_instance() {
       let lib = VulkanLibrary::new().unwrap();
       let instance = Instance::new(lib, InstanceCreateInfo::application_from_cargo_toml());
 
-      INSTANCE = Some(instance.unwrap());
+      INSTANCE = match instance {
+        Ok(instance) => Some(instance),
+        Err(_) => None,
+      };
     }
   }
 }
@@ -21,6 +24,14 @@ pub fn maybe_create_instance() {
 unsafe fn get_device() -> Result<Arc<PhysicalDevice>, Box<dyn std::error::Error>> {
   if INSTANCE.is_none() {
     maybe_create_instance();
+
+    // if it is still none, then we failed to create an instance
+    if INSTANCE.is_none() {
+      return Err(Box::new(std::io::Error::new(
+        std::io::ErrorKind::Other,
+        "Failed to create instance",
+      )));
+    }
   }
 
   let instance = INSTANCE.as_ref().unwrap();
