@@ -249,6 +249,10 @@ pub extern "C" fn sys_cpu_usage() -> f64 {
       total += cpu.cpu_usage() as f64;
     }
 
+    if total.is_nan() {
+      return 0.0;
+    }
+
     total
   }
 }
