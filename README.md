@@ -21,9 +21,9 @@
   * [`sysinfo_get_username()`](#sysinfo_get_username)
   * [`sysinfo_get_hostname()`](#sysinfo_get_hostname)
   * [`sysinfo_get_pid()`](#sysinfo_get_pid)
-  * [`sysinfo_sys_mem_max()`](#sysinfo_sys_mem_max)
   * [`sysinfo_get_core_count()`](#sysinfo_get_core_count)
   * [`sysinfo_get_cpu_vendor_id()`](#sysinfo_get_cpu_vendor_id)
+  * [`sysinfo_get_memory_max()`](#sysinfo_get_memory_max)
   * [`sysinfo_sys_memory_used()`](#sysinfo_sys_memory_used)
   * [`sysinfo_proc_memory_used()`](#sysinfo_proc_memory_used)
   * [`sysinfo_sys_cpu_usage()`](#sysinfo_sys_cpu_usage)
@@ -111,14 +111,14 @@ Returns the hostname of the system.
 ## `sysinfo_get_pid()`
 Returns the PID of the game.
 
-## `sysinfo_sys_mem_max()`
-Returns the maximum memory of the system in bytes.
-
 ## `sysinfo_get_core_count()`
 Returns the number of cores the CPU has.
 
 ## `sysinfo_get_cpu_vendor_id()`
 Returns the vendor ID of the CPU.
+
+## `sysinfo_get_memory_max()`
+Returns the maximum memory of the system in bytes.
 
 ## `sysinfo_sys_memory_used()`
 Returns the memory used by the system in bytes.
