@@ -14,7 +14,7 @@ pub fn get_gpu_name() -> String {
 #[cfg(not(target_os = "macos"))]
 pub fn get_gpu_vram() -> u64 {
   let gpus = Device::all();
-  
+
   gpus[0].memory()
 }
 
