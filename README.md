@@ -3,7 +3,9 @@
   <p>
     Cross-platform GameMaker extension for getting system information and resource usage 
   </p>
+  <img width="70%" src="https://github.com/SpikeHD/gm-sysinfo/assets/25207995/27bbeb40-f1db-4fd1-b2b1-3790f67aeaaf" />
 </div>
+
 
 # Table of Contents
 * [Table of Contents](#table-of-contents)
