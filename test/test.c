@@ -19,6 +19,7 @@ extern bool is_initialized();
 extern void init();
 
 extern const char* get_username();
+extern const char* get_hostname();
 
 extern double get_pid();
 extern double get_memory_max();
@@ -43,6 +44,14 @@ int main() {
   init();
   printf("is_initialized (after init): %d\n", is_initialized());
   assert(is_initialized());
+
+  // Test username
+  printf("Username: %s\n", get_username());
+  assert(strlen(get_username()) > 0);
+
+  // Test hostname
+  printf("Hostname: %s\n", get_hostname());
+  assert(strlen(get_hostname()) > 0);
 
   // Test get_pid
   printf("PID: %f\n", get_pid());

@@ -51,6 +51,16 @@ pub extern "C" fn get_username() -> *mut c_char {
     .into_raw()
 }
 
+// Get hostname
+#[no_mangle]
+pub extern "C" fn get_hostname() -> *mut c_char {
+  let hostname = whoami::hostname();
+
+  CString::new(hostname)
+    .unwrap_or(CString::new("").unwrap())
+    .into_raw()
+}
+
 // Get pid as float
 #[no_mangle]
 pub extern "C" fn get_pid() -> f64 {

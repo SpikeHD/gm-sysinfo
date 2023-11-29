@@ -18,7 +18,7 @@ sysinfo_init();
 var max_mem = sysinfo_sys_mem_max();
 
 // Get the memory usage of the game
-var mem = sysinfo_mem_usage();
+var mem = sysinfo_proc_mem_usage();
 
 // Display the cur / max (pct%)
 var max_mb = max_mem / 1024 / 1024;
@@ -33,18 +33,31 @@ draw_text(0, 0, string(mem_mb) + " / " + string(max_mb) + " (" + string(mem / ma
 sysinfo_init();
 
 // Get the CPU and memory usage of the game
-var cpu_name = sysinfo_cpu_name();
-var cpu = sysinfo_cpu_usage();
+var cpu_name = sysinfo_get_cpu_brand();
+var cpu = sysinfo_get_cpu_usage();
 
 // Display the %
 draw_text(0, 0, cpu_name + ": " + string(cpu) + "%");
 ```
 
+## Get the host/username
+```gml
+// Init
+sysinfo_init();
+
+// Get the host name
+var host = sysinfo_get_hostname();
+var user = sysinfo_get_username();
+
+// Display the host name
+draw_text(0, 0, user + "@" + host);
+```
+
 # TODO
 
-- [ ] CPU usage
-- [ ] Memory usage
-- [ ] System name/hostname
+- [x] CPU usage
+- [x] Memory usage
+- [x] System name/hostname
 - [ ] GPU usage(?)
 
 # Documentation
