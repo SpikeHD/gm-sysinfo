@@ -8,19 +8,14 @@ use metal::Device;
 pub fn get_gpu_name() -> String {
   let gpus = Device::all();
 
-  gpu_name[0].name().to_string()
+  gpus[0].name().to_string()
 }
 
 #[cfg(not(target_os = "macos"))]
 pub fn get_gpu_vram() -> u64 {
   let gpus = Device::all();
-  let mut gpu_vram = 0;
-
-  for gpu in gpus {
-    gpu_vram += gpu.memory();
-  }
-
-  gpu_vram
+  
+  gpus[0].memory()
 }
 
 #[cfg(target_os = "macos")]
