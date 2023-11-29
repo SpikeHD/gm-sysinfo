@@ -74,10 +74,14 @@ pub unsafe fn get_gpu_vram() -> u64 {
     Err(_) => return 0,
   };
 
-  let heap = match device.memory_properties().memory_heaps.first() {
-    Some(heap) => heap,
-    None => return 0,
-  };
+  let heap = &device.memory_properties().memory_heaps;
+  let heap = heap.into_iter().find(|heap| {
+    heap.flags.contains(vulkano::memory::MemoryHeapFlags::DEVICE_LOCAL)
+  });
 
-  heap.size
+  if heap.is_none() {
+    return 0;
+  }
+
+  heap.unwrap().size
 }
