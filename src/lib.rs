@@ -1,6 +1,6 @@
 use std::ffi::CString;
 use std::os::raw::c_char;
-use sysinfo::{CpuExt, Pid, PidExt, ProcessExt, System, SystemExt, CpuRefreshKind};
+use sysinfo::{CpuExt, CpuRefreshKind, Pid, PidExt, ProcessExt, System, SystemExt};
 
 static mut SYSTEM: Option<System> = None;
 
@@ -15,26 +15,29 @@ pub extern "C" fn is_initialized() -> bool {
 pub extern "C" fn init() {
   unsafe {
     SYSTEM = Some(System::new());
-    
+
     // trigger a refresh
     SYSTEM.as_mut().unwrap().refresh_all();
 
     // After a short amount of time, trigger a CPU refresh
     std::thread::sleep(System::MINIMUM_CPU_UPDATE_INTERVAL * 2);
-    SYSTEM.as_mut().unwrap().refresh_cpu_specifics(CpuRefreshKind::everything());
+    SYSTEM
+      .as_mut()
+      .unwrap()
+      .refresh_cpu_specifics(CpuRefreshKind::everything());
   }
 }
 
 // Exe path to name
 #[no_mangle]
 fn exe_path_to_name(path: &str) -> String {
-  let path = path.replace("\\", "/");
+  let path = path.replace('\\', "/");
 
-  let path = path.split("/").collect::<Vec<&str>>();
+  let path = path.split('/').collect::<Vec<&str>>();
 
   // Get rid of extension if it exists
-  let path = path[path.len() - 1].split(".").collect::<Vec<&str>>();
-  
+  let path = path[path.len() - 1].split('.').collect::<Vec<&str>>();
+
   path[0].to_string()
 }
 
@@ -86,7 +89,10 @@ pub extern "C" fn get_cpu_frequency() -> f64 {
 
   unsafe {
     // CPU data should always have a refresh_cpu() call before it
-    SYSTEM.as_mut().unwrap().refresh_cpu_specifics(CpuRefreshKind::everything());
+    SYSTEM
+      .as_mut()
+      .unwrap()
+      .refresh_cpu_specifics(CpuRefreshKind::everything());
 
     let cpus = SYSTEM.as_mut().unwrap().cpus();
 
@@ -210,7 +216,10 @@ pub extern "C" fn proc_cpu_usage() -> f64 {
 
   unsafe {
     // CPU data should always have a refresh_cpu() call before it
-    SYSTEM.as_mut().unwrap().refresh_cpu_specifics(CpuRefreshKind::everything());
+    SYSTEM
+      .as_mut()
+      .unwrap()
+      .refresh_cpu_specifics(CpuRefreshKind::everything());
 
     // Refresh and get the process
     SYSTEM.as_mut().unwrap().refresh_processes();
