@@ -13,6 +13,7 @@
   * [Display memory usage](#display-memory-usage)
   * [Display CPU usage](#display-cpu-usage)
   * [Get the host/username](#get-the-hostusername)
+  * [Require only the most top-end of GPUs](#require-only-the-most-top-end-of-gpus)
 * [TODO](#todo)
 * [Documentation](#documentation)
   * [General](#general)
@@ -83,6 +84,20 @@ var user = sysinfo_get_username();
 
 // Display the host name
 draw_text(0, 0, user + "@" + host);
+```
+
+## Require only the most top-end of GPUs
+```javascript
+// Init
+sysinfo_init();
+
+// Get the GPU name
+let gpu = sysinfo_get_gpu_name();
+
+if (string_pos("RTX", gpu) == 0) {
+  show_message_async("Sorry, but your GPU sucks :/");
+  exit;
+}
 ```
 
 # TODO
