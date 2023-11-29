@@ -1,4 +1,46 @@
-#[cfg_attr(target_os = "linux", path = "linux.rs")]
-#[cfg_attr(target_os = "windows", path = "windows.rs")]
-#[cfg_attr(target_os = "macos", path = "apple.rs")]
-pub mod info;
+#[cfg(not(target_os = "macos"))]
+use rust_gpu_tools::Device;
+
+#[cfg(target_os = "macos")]
+use metal::Device;
+
+#[cfg(not(target_os = "macos"))]
+pub fn get_gpu_name() -> String {
+  let gpus = Device::all();
+
+  gpu_name[0].name().to_string()
+}
+
+#[cfg(not(target_os = "macos"))]
+pub fn get_gpu_vram() -> u64 {
+  let gpus = Device::all();
+  let mut gpu_vram = 0;
+
+  for gpu in gpus {
+    gpu_vram += gpu.memory();
+  }
+
+  gpu_vram
+}
+
+#[cfg(target_os = "macos")]
+pub fn get_gpu_name() -> String {
+  let gpus = Device::all();
+
+  if gpus.len() == 0 {
+    return String::from("N/A");
+  }
+  
+  gpus[0].name().to_string()
+}
+
+#[cfg(target_os = "macos")]
+pub fn get_gpu_vram() -> u64 {
+  let gpus = Device::all();
+  
+  if gpus.len() == 0 {
+    return 0;
+  }
+
+  gpus[0].recommended_max_working_set_size()
+}

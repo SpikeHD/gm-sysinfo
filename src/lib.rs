@@ -174,7 +174,7 @@ pub extern "C" fn get_gpu_name() -> *mut c_char {
     return CString::new("").unwrap().into_raw();
   }
 
-  let gpu_name = gpu::info::get_gpu_name();
+  let gpu_name = gpu::get_gpu_name();
 
   CString::new(gpu_name)
     .unwrap_or(CString::new("").unwrap())
@@ -188,10 +188,8 @@ pub extern "C" fn get_gpu_vram() -> f64 {
     eprintln!("System not initialized!");
     return -1.0;
   }
-
-  let gpu_vram = gpu::info::get_gpu_vram();
-
-  gpu_vram as f64
+  
+  gpu::get_gpu_vram() as f64
 }
 
 // Get memory used for the system
