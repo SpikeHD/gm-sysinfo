@@ -13,21 +13,27 @@
   * [Get the host/username](#get-the-hostusername)
 * [TODO](#todo)
 * [Documentation](#documentation)
-  * [`sysinfo_init()`](#sysinfo_init)
-  * [`sysinfo_get_cpu_usage()`](#sysinfo_get_cpu_usage)
-  * [`sysinfo_get_cpu_brand()`](#sysinfo_get_cpu_brand)
-  * [`sysinfo_get_cpu_cores()`](#sysinfo_get_cpu_cores)
-  * [`sysinfo_get_cpu_frequency()`](#sysinfo_get_cpu_frequency)
-  * [`sysinfo_get_username()`](#sysinfo_get_username)
-  * [`sysinfo_get_hostname()`](#sysinfo_get_hostname)
-  * [`sysinfo_get_pid()`](#sysinfo_get_pid)
-  * [`sysinfo_get_core_count()`](#sysinfo_get_core_count)
-  * [`sysinfo_get_cpu_vendor_id()`](#sysinfo_get_cpu_vendor_id)
-  * [`sysinfo_get_memory_max()`](#sysinfo_get_memory_max)
-  * [`sysinfo_sys_memory_used()`](#sysinfo_sys_memory_used)
-  * [`sysinfo_proc_memory_used()`](#sysinfo_proc_memory_used)
-  * [`sysinfo_sys_cpu_usage()`](#sysinfo_sys_cpu_usage)
-  * [`sysinfo_proc_cpu_usage()`](#sysinfo_proc_cpu_usage)
+  * [General](#general)
+    * [`sysinfo_init()`](#sysinfo_init)
+    * [`sysinfo_get_username()`](#sysinfo_get_username)
+    * [`sysinfo_get_hostname()`](#sysinfo_get_hostname)
+    * [`sysinfo_get_pid()`](#sysinfo_get_pid)
+  * [CPU](#cpu)
+    * [`sysinfo_get_cpu_usage()`](#sysinfo_get_cpu_usage)
+    * [`sysinfo_get_cpu_brand()`](#sysinfo_get_cpu_brand)
+    * [`sysinfo_get_cpu_cores()`](#sysinfo_get_cpu_cores)
+    * [`sysinfo_get_cpu_frequency()`](#sysinfo_get_cpu_frequency)
+    * [`sysinfo_sys_cpu_usage()`](#sysinfo_sys_cpu_usage)
+    * [`sysinfo_proc_cpu_usage()`](#sysinfo_proc_cpu_usage)
+    * [`sysinfo_get_core_count()`](#sysinfo_get_core_count)
+    * [`sysinfo_get_cpu_vendor_id()`](#sysinfo_get_cpu_vendor_id)
+  * [GPU](#gpu)
+    * [`sysinfo_get_gpu_name()`](#sysinfo_get_gpu_name)
+    * [`sysinfo_get_gpu_vram()`](#sysinfo_get_gpu_vram)
+  * [Memory](#memory)
+    * [`sysinfo_get_memory_max()`](#sysinfo_get_memory_max)
+    * [`sysinfo_sys_memory_used()`](#sysinfo_sys_memory_used)
+    * [`sysinfo_proc_memory_used()`](#sysinfo_proc_memory_used)
 
 # Examples
 
@@ -87,48 +93,62 @@ draw_text(0, 0, user + "@" + host);
 
 # Documentation
 
-## `sysinfo_init()`
+## General
+
+### `sysinfo_init()`
 Initializes the extension. This must be called before any other functions are called.
 
-## `sysinfo_get_cpu_usage()`
-Returns the current CPU usage of the game in percent.
-
-## `sysinfo_get_cpu_brand()`
-Returns the brand name of the CPU.
-
-## `sysinfo_get_cpu_cores()`
-Returns the number of cores the CPU has.
-
-## `sysinfo_get_cpu_frequency()`
-Returns the frequency of the CPU in MHz.
-
-## `sysinfo_get_username()`
+### `sysinfo_get_username()`
 Returns the username of the current user.
 
-## `sysinfo_get_hostname()`
+### `sysinfo_get_hostname()`
 Returns the hostname of the system.
 
-## `sysinfo_get_pid()`
+### `sysinfo_get_pid()`
 Returns the PID of the game.
 
-## `sysinfo_get_core_count()`
+## CPU
+
+### `sysinfo_get_cpu_usage()`
+Returns the current CPU usage of the game in percent.
+
+### `sysinfo_get_cpu_brand()`
+Returns the brand name of the CPU.
+
+### `sysinfo_get_cpu_cores()`
 Returns the number of cores the CPU has.
 
-## `sysinfo_get_cpu_vendor_id()`
-Returns the vendor ID of the CPU.
+### `sysinfo_get_cpu_frequency()`
+Returns the frequency of the CPU in MHz.
 
-## `sysinfo_get_memory_max()`
-Returns the maximum memory of the system in bytes.
-
-## `sysinfo_sys_memory_used()`
-Returns the memory used by the system in bytes.
-
-## `sysinfo_proc_memory_used()`
-Returns the memory used by the game in bytes.
-
-## `sysinfo_sys_cpu_usage()`
+### `sysinfo_sys_cpu_usage()`
 Returns the CPU usage of the system in percent.
 
-## `sysinfo_proc_cpu_usage()`
+### `sysinfo_proc_cpu_usage()`
 Returns the CPU usage of the game in percent.
+
+### `sysinfo_get_core_count()`
+Returns the number of cores the CPU has.
+
+### `sysinfo_get_cpu_vendor_id()`
+Returns the vendor ID of the CPU.
+
+## GPU
+
+### `sysinfo_get_gpu_name()`
+Returns the name of the GPU.
+
+### `sysinfo_get_gpu_vram()`
+Returns the amount of VRAM the GPU has in bytes.
+
+## Memory
+
+### `sysinfo_get_memory_max()`
+Returns the maximum memory of the system in bytes.
+
+### `sysinfo_sys_memory_used()`
+Returns the memory used by the system in bytes.
+
+### `sysinfo_proc_memory_used()`
+Returns the memory used by the game in bytes.
 
