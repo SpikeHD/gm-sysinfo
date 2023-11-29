@@ -52,7 +52,7 @@ jobs:
       # Install opencl lib (windows) via intel drivers
       - name: Install OpenCL
         if: matrix.platform == 'windows-latest'
-        run: choco install intel-graphics-driver
+        run: choco install opencl-intel-cpu-runtime
 
       # Build the library
       - name: Build
