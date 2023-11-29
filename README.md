@@ -3,6 +3,14 @@
   <p>
     Cross-platform GameMaker extension for getting system information and resource usage 
   </p>
+
+<div align="center">
+ <img src="https://img.shields.io/github/actions/workflow/status/SpikeHD/gm-sysinfo/build.yml" />
+ <img src="https://img.shields.io/github/actions/workflow/status/SpikeHD/gm-sysinfo/test.yml?label=tests" />
+ <img src="https://img.shields.io/github/repo-size/SpikeHD/gm-sysinfo" />
+ <img src="https://img.shields.io/github/commit-activity/m/SpikeHD/gm-sysinfo" />
+</div>
+
   <img width="70%" src="https://github.com/SpikeHD/gm-sysinfo/assets/25207995/27bbeb40-f1db-4fd1-b2b1-3790f67aeaaf" />
 </div>
 
