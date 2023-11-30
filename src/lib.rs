@@ -8,13 +8,13 @@ static mut SYSTEM: Option<System> = None;
 
 // Check if initialized
 #[no_mangle]
-pub extern "C" fn is_initialized() -> bool {
+pub fn is_initialized() -> bool {
   unsafe { SYSTEM.is_some() }
 }
 
 // Initializes the System object
 #[no_mangle]
-pub extern "C" fn init() {
+pub fn init() {
   unsafe {
     SYSTEM = Some(System::new());
 
@@ -45,7 +45,7 @@ fn exe_path_to_name(path: &str) -> String {
 
 // Get username
 #[no_mangle]
-pub extern "C" fn get_username() -> *mut c_char {
+pub fn get_username() -> *mut c_char {
   let username = whoami::username();
 
   CString::new(username)
@@ -55,7 +55,7 @@ pub extern "C" fn get_username() -> *mut c_char {
 
 // Get hostname
 #[no_mangle]
-pub extern "C" fn get_hostname() -> *mut c_char {
+pub fn get_hostname() -> *mut c_char {
   let hostname = whoami::hostname();
 
   CString::new(hostname)
@@ -65,13 +65,13 @@ pub extern "C" fn get_hostname() -> *mut c_char {
 
 // Get pid as float
 #[no_mangle]
-pub extern "C" fn get_pid() -> f64 {
+pub fn get_pid() -> f64 {
   std::process::id() as f64
 }
 
 // Get memory maximum for the system
 #[no_mangle]
-pub extern "C" fn get_memory_max() -> f64 {
+pub fn get_memory_max() -> f64 {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return -1.0;
@@ -82,7 +82,7 @@ pub extern "C" fn get_memory_max() -> f64 {
 
 // Get core count
 #[no_mangle]
-pub extern "C" fn get_core_count() -> f64 {
+pub fn get_core_count() -> f64 {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return -1.0;
@@ -93,7 +93,7 @@ pub extern "C" fn get_core_count() -> f64 {
 
 // Get CPU frequency
 #[no_mangle]
-pub extern "C" fn get_cpu_frequency() -> f64 {
+pub fn get_cpu_frequency() -> f64 {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return -1.0;
@@ -114,7 +114,7 @@ pub extern "C" fn get_cpu_frequency() -> f64 {
 
 // Get CPU name
 #[no_mangle]
-pub extern "C" fn get_cpu_name() -> *mut c_char {
+pub fn get_cpu_name() -> *mut c_char {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return CString::new("").unwrap().into_raw();
@@ -132,7 +132,7 @@ pub extern "C" fn get_cpu_name() -> *mut c_char {
 
 // CPU Brand
 #[no_mangle]
-pub extern "C" fn get_cpu_brand() -> *mut c_char {
+pub fn get_cpu_brand() -> *mut c_char {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return CString::new("").unwrap().into_raw();
@@ -150,7 +150,7 @@ pub extern "C" fn get_cpu_brand() -> *mut c_char {
 
 // Get CPU vendor ID
 #[no_mangle]
-pub extern "C" fn get_cpu_vendor_id() -> *mut c_char {
+pub fn get_cpu_vendor_id() -> *mut c_char {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return CString::new("").unwrap().into_raw();
@@ -168,7 +168,7 @@ pub extern "C" fn get_cpu_vendor_id() -> *mut c_char {
 
 // Get GPU name
 #[no_mangle]
-pub extern "C" fn get_gpu_name() -> *mut c_char {
+pub fn get_gpu_name() -> *mut c_char {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return CString::new("").unwrap().into_raw();
@@ -182,7 +182,7 @@ pub extern "C" fn get_gpu_name() -> *mut c_char {
 }
 
 #[no_mangle]
-pub extern "C" fn get_gpu_vram() -> f64 {
+pub fn get_gpu_vram() -> f64 {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return -1.0;
@@ -193,7 +193,7 @@ pub extern "C" fn get_gpu_vram() -> f64 {
 
 // Get memory used for the system
 #[no_mangle]
-pub extern "C" fn sys_memory_used() -> f64 {
+pub fn sys_memory_used() -> f64 {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return -1.0;
@@ -209,7 +209,7 @@ pub extern "C" fn sys_memory_used() -> f64 {
 
 // Get memory used for the process
 #[no_mangle]
-pub extern "C" fn proc_memory_used() -> f64 {
+pub fn proc_memory_used() -> f64 {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return -1.0;
@@ -229,7 +229,7 @@ pub extern "C" fn proc_memory_used() -> f64 {
 
 // Get the CPU usage for the system
 #[no_mangle]
-pub extern "C" fn sys_cpu_usage() -> f64 {
+pub fn sys_cpu_usage() -> f64 {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return -1.0;
@@ -259,7 +259,7 @@ pub extern "C" fn sys_cpu_usage() -> f64 {
 
 // Get the CPU usage for the process
 #[no_mangle]
-pub extern "C" fn proc_cpu_usage() -> f64 {
+pub fn proc_cpu_usage() -> f64 {
   if !is_initialized() {
     eprintln!("System not initialized!");
     return -1.0;
