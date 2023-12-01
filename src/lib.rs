@@ -253,7 +253,7 @@ pub fn sys_cpu_usage() -> f64 {
       return 0.0;
     }
 
-    total
+    total / cpus.len() as f64
   }
 }
 
