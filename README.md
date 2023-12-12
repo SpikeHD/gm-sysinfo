@@ -11,7 +11,7 @@
  <img src="https://img.shields.io/github/commit-activity/m/SpikeHD/gm-sysinfo" />
 </div>
 
-  <img width="70%" src="https://github.com/SpikeHD/gm-sysinfo/assets/25207995/27bbeb40-f1db-4fd1-b2b1-3790f67aeaaf" />
+  <img width="70%" src="https://github.com/SpikeHD/gm-sysinfo/assets/25207995/0d003ce6-447a-410f-8d7f-84b21a702d0b" />
 </div>
 
 
